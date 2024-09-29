@@ -4,5 +4,5 @@
     "types": ["cypress"]
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules"]  // Sobrescribe la exclusión heredada de 'cypress'
+  "exclude": ["node_modules"] 
 }
