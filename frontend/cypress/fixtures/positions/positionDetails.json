@@ -1,0 +1,22 @@
+{
+  "id": 1,
+  "title": "Senior Full-Stack Engineer",
+  "description": "Develop and maintain software applications.",
+  "status": "Open",
+  "isVisible": true,
+  "location": "Remote",
+  "jobDescription": "Full-stack development",
+  "companyDescription": "LTI is a leading HR solutions provider.",
+  "applicationDeadline": "2024-12-31",
+  "contactInfo": "hr@lti.com",
+  "interviewFlow": {
+    "id": 1,
+    "description": "Standard development interview process",
+    "interviewSteps": [
+      { "id": 1, "name": "Aplicación", "orderIndex": 1 },
+      { "id": 2, "name": "Entrevista Técnica", "orderIndex": 2 },
+      { "id": 3, "name": "Entrevista de RRHH", "orderIndex": 3 },
+      { "id": 4, "name": "Contratado", "orderIndex": 4 }
+    ]
+  }
+}

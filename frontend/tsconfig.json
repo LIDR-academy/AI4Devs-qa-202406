@@ -22,5 +22,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "exclude": ["node_modules", "cypress"] // Asegúrate de que 'cypress' esté excluido
 }

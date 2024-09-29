@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "firstName": "Juan",
+    "lastName": "Pérez",
+    "email": "juan.perez@example.com",
+    "currentInterviewStep": "Entrevista Técnica"
+  },
+  {
+    "id": 2,
+    "firstName": "María",
+    "lastName": "García",
+    "email": "maria.garcia@example.com",
+    "currentInterviewStep": "Aplicación"
+  },
+  {
+    "id": 3,
+    "firstName": "Carlos",
+    "lastName": "López",
+    "email": "carlos.lopez@example.com",
+    "currentInterviewStep": "Contratado"
+  }
+]
