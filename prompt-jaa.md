@@ -367,7 +367,7 @@ This test will validate that the Positions page loads correctly and that clickin
 
 ## Prompt 4
 
-Act as the best QA tester expert in cypress; I want you to create some E2E tests to validate the access to the Position page and the Candidate changes. Please let me know if all is good to create the E2E tests, don't try to install packages you need first to check the ones installed in @package.jsonl. First analyze all the code in @frontend  and the structure of the application before implementating the tests. Ask me if you have doubts.
+Please let create another scenario with this sentence: "Verify that the columns corresponding to each phase of the contracting process are displayed."
 
 ### Answer
 
