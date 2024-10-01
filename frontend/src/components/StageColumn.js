@@ -11,7 +11,13 @@ const StageColumn = ({ stage, index, onCardClick }) => (
                     <Card.Header className="text-center">{stage.title}</Card.Header>
                     <Card.Body>
                         {stage.candidates.map((candidate, idx) => (
-                            <CandidateCard key={candidate.id} candidate={candidate} index={idx} onClick={onCardClick} />
+                            <CandidateCard 
+                                key={candidate.id} 
+                                candidate={candidate} 
+                                index={idx} 
+                                onClick={onCardClick} 
+                                stageTitle={stage.title}
+                            />
                         ))}
                         {provided.placeholder}
                     </Card.Body>
