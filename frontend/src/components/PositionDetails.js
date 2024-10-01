@@ -105,6 +105,26 @@ const PositionsDetails = () => {
         setSelectedCandidate(null);
     };
 
+    // const updateCandidatePosition = (candidateId, sourceStageIndex, destStageIndex) => {
+    //     const updatedStages = [...stages];
+    //     const sourceStage = updatedStages[sourceStageIndex];
+    //     const destStage = updatedStages[destStageIndex];
+        
+    //     const candidateIndex = sourceStage.candidates.findIndex(c => c.id === candidateId);
+    //     if (candidateIndex === -1) return;
+        
+    //     const [movedCandidate] = sourceStage.candidates.splice(candidateIndex, 1);
+    //     destStage.candidates.push(movedCandidate);
+        
+    //     setStages(updatedStages);
+    //     updateCandidateStep(movedCandidate.id, movedCandidate.applicationId, destStage.id);
+    // };
+
+    // // Expose the method to the window object for testing
+    // if (process.env.NODE_ENV === 'development') {
+    //     window.updateCandidatePosition = updateCandidatePosition;
+    // }
+
     return (
         <Container className="mt-5">
             <Button variant="link" onClick={() => navigate('/positions')} className="mb-3">
