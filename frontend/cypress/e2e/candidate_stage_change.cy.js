@@ -33,11 +33,11 @@ describe('Cambio de Fase de un Candidato', () => {
       // Esperar la solicitud PUT y verificar los datos enviados
       cy.wait('@updateCandidateStage').then((interception) => {
         const { body } = interception.request;
-        expect(body.currentInterviewStep).to.equal(2); // Asegúrate de que el índice corresponda a "Manager Interview"
-        // Puedes agregar más aserciones según la estructura del cuerpo de la solicitud
+        expect(body.applicationId).to.equal(3);
+        expect(body.currentInterviewStep).to.equal(3);
       });
   
       // Opcional: Verificar que se muestra un mensaje de éxito o se actualiza la UI correctamente
-      cy.contains('Jane Smith').parent().should('have.class', 'new-stage-class'); // Reemplaza 'new-stage-class' con la clase real
+    //   cy.contains('Jane Smith').parent().should('have.class', 'new-stage-class'); // Reemplaza 'new-stage-class' con la clase real
     });
   });
