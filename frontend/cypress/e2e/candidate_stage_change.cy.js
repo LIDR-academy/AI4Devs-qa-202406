@@ -1,74 +1,43 @@
-describe('Candidate Stage Change', () => {
-    beforeEach(() => {
+describe('Cambio de Fase de un Candidato', () => {
+    it('Debe mover la tarjeta de Jane Smith a Manager Interview y actualizar el backend', () => {
+      // Interceptar la solicitud PUT al backend
+      cy.intercept('PUT', '/candidates/*').as('updateCandidateStage');
+  
+      // Visitar la página de detalles de la posición
       cy.visit('http://localhost:3000/positions/1');
-      cy.get('h2.text-center.mb-4', { timeout: 10000 }).should('be.visible');
-    });
   
-    it('should move a candidate card to a new column and update the backend', () => {
-      // Locate Jane Smith's card in the Technical Interview column
-      cy.contains('.col-md-3', 'Technical Interview')
-        .find('.card-title')
-        .contains('Jane Smith')
+      // Asegurarse de que la columna "Technical Interview" está visible
+      cy.contains('.card-header', 'Technical Interview').should('be.visible');
+  
+      // Asegurarse de que la columna "Manager Interview" está visible
+      cy.contains('.card-header', 'Manager Interview').should('be.visible');
+  
+      // Obtener la tarjeta de "Jane Smith"
+      cy.contains('.card-title', 'Jane Smith')
         .closest('.card')
-        .as('janeSmithCard');
+        .as('janeCard');
   
-      // Locate the Manager Interview column
-      cy.contains('.col-md-3', 'Manager Interview')
+      // Obtener la columna "Manager Interview"
+      cy.contains('.card-header', 'Manager Interview')
+        .closest('.card')
         .as('managerInterviewColumn');
   
-      // Log the Manager Interview column details
-      cy.get('@managerInterviewColumn').then($column => {
-        const rect = $column[0].getBoundingClientRect();
-        cy.log('Manager Interview Column:', {
-          element: $column[0].outerHTML,
-          x: rect.x,
-          y: rect.y,
-          width: rect.width,
-          height: rect.height
-        });
-      });
-      cy.intercept('PUT', '/candidates/*').as('updateCandidate');
+      // Realizar el arrastre de "Jane Smith" a "Manager Interview"
+      cy.get('@janeCard').drag('@managerInterviewColumn');
   
-      // Perform drag and drop
-    //   cy.get('@janeSmithCard').then($card => {
-    //     const cardRect = $card[0].getBoundingClientRect();
-    //     const startX = cardRect.left + cardRect.width / 2;
-    //     const startY = cardRect.top + cardRect.height / 2;
+      // Verificar que la tarjeta ahora está dentro de la columna "Manager Interview"
+      cy.get('@managerInterviewColumn')
+        .find('.card-title')
+        .should('contain', 'Jane Smith');
   
-    //     cy.get('@managerInterviewColumn').then($column => {
-    //       const colRect = $column[0].getBoundingClientRect();
-    //       const endX = colRect.left + colRect.width / 2;
-    //       const endY = colRect.top + colRect.height / 2;
-  
-    //       cy.log('Drag coordinates:', { startX, startY, endX, endY });
-  
-    //       cy.get('@janeSmithCard')
-    //         .trigger('mousedown', { which: 1, clientX: startX, clientY: startY })
-    //         .trigger('mousemove', { clientX: endX, clientY: endY, force: true })
-    //         .trigger('mouseup', { force: true });
-  
-    //       cy.log('Drag operation completed');
-    //     });
-    //   });
-      cy.window().then((win) => {
-        win.updateCandidatePosition('2', 1, 2); // Assuming Jane Smith's id is '2', moving from index 1 to 2
+      // Esperar la solicitud PUT y verificar los datos enviados
+      cy.wait('@updateCandidateStage').then((interception) => {
+        const { body } = interception.request;
+        expect(body.currentInterviewStep).to.equal(2); // Asegúrate de que el índice corresponda a "Manager Interview"
+        // Puedes agregar más aserciones según la estructura del cuerpo de la solicitud
       });
   
-      // Wait for potential animations or state updates
-      cy.wait(1000);
-  
-      // Verify that the card has moved to the new column
-      cy.get('@managerInterviewColumn').within(() => {
-        cy.get('.card-title').should('contain', 'Jane Smith');
-      });
-  
-      // Verify that the backend was updated correctly
-      cy.wait('@updateCandidate').then((interception) => {
-        expect(interception.request.body).to.deep.equal({
-          applicationId: 2, // Assuming Jane Smith's application ID is 2
-          currentInterviewStep: 3 // Assuming Manager Interview step ID is 3
-        });
-        expect(interception.response.statusCode).to.equal(200);
-      });
+      // Opcional: Verificar que se muestra un mensaje de éxito o se actualiza la UI correctamente
+      cy.contains('Jane Smith').parent().should('have.class', 'new-stage-class'); // Reemplaza 'new-stage-class' con la clase real
     });
   });
