@@ -6,6 +6,7 @@ import candidateRoutes from './routes/candidateRoutes';
 import positionRoutes from './routes/positionRoutes';
 import { uploadFile } from './application/services/fileUploadService';
 import cors from 'cors';
+import testRoutes from './routes/testRoutes';
 
 // Extender la interfaz Request para incluir prisma
 declare global {
@@ -45,6 +46,10 @@ app.post('/upload', uploadFile);
 
 // Route to get candidates by position
 app.use('/positions', positionRoutes);
+
+if (process.env.NODE_ENV === 'test') {
+  app.use('/test', testRoutes);
+}
 
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
