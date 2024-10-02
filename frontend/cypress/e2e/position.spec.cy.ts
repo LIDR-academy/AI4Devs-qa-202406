@@ -1,3 +1,5 @@
+import { getDroppableSelector, getHandleSelector } from "./utils";
+
 describe('Position Details Page', () => {
   beforeEach(() => {
     // Assuming we have a position with ID 1
@@ -31,6 +33,59 @@ describe('Position Details Page', () => {
           }
         });
       });
+    });
+  });
+
+  it('should allow dragging and dropping a candidate card to a new column', () => {
+    // Wait for the page to load
+    cy.get('.stage-card').should('have.length.at.least', 2);
+
+    // Find the first column with a candidate
+    cy.get('.stage-card-body').each(($column, columnIndex) => {
+      if ($column.find('.candidate-card').length > 0) {
+        cy.get(getDroppableSelector()).eq(0).as('sourceColumn'); // first column
+        cy.get(getDroppableSelector()).eq(1).as('targetColumn'); // second column
+
+        cy.get('@sourceColumn').within(() => {
+          cy.get('[data-rbd-draggable-id="3"]').should('exist');
+        })
+
+        cy.get('@targetColumn').within(() => {
+          cy.get('[data-rbd-draggable-id="3"]').should('not.exist');
+        })
+
+        cy.get('@sourceColumn')
+          .find(getHandleSelector())
+          .first()
+          .focus()
+          .trigger('keydown', { keyCode: 32 /** space */ })
+          .trigger('keydown', { keyCode: 39 /** arrow right */, force: true })
+          // finishing before the movement time is fine - but this looks nice
+          // timing: outOfTheWay
+          .wait(0,2 * 1000)
+          .trigger('keydown', { keyCode: 32 /** space */, force: true });
+
+
+        cy.get('@sourceColumn').within(() => {
+          cy.get('[data-rbd-draggable-id="3"]').should('not.exist');
+        })
+
+        cy.get('@targetColumn').within(() => {
+          cy.get('[data-rbd-draggable-id="3"]').should('exist');
+        })
+
+        // Intercept the PUT request
+        cy.intercept('PUT', '/candidates/*').as('updateCandidate');
+
+        // Wait for the PUT request to complete
+        cy.wait('@updateCandidate').then((interception) => {
+          expect(interception.response.statusCode).to.equal(200);
+          expect(interception.response.body).to.have.property('message', 'Candidate stage updated successfully');
+        });
+
+        // Exit the loop after finding and moving a card
+        return false;
+      }
     });
   });
 });
