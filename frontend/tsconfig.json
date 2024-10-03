@@ -23,6 +23,7 @@
   },
   "include": [
     "src",
-    "cypress"
+    "cypress",
+    "cypress/support/index.d.ts"
   ]
 }
